@@ -1,6 +1,7 @@
-mport time #importa la libreria time para simular el paso del tiempo en la ejecución de procesos
+import time #importa la libreria time para simular el paso del tiempo en la ejecución de procesos
 from collections import deque #| Importa deque para implementar la cola del algoritmo Round Robin
-
+import os #importa la libreria os para limpiar la pantalla en cada iteración del menú
+ 
 # ---------------------------------------------------------
 # Clase de Colores para una Interfaz Profesional
 # ---------------------------------------------------------
@@ -16,7 +17,7 @@ class Color:
 # Clase Proceso: Representa la unidad básica de trabajo [cite: 5, 18, 23]
 # ---------------------------------------------------------
 class Proceso:
-    def __init__(self, nombre, tiempo):
+    def __init__(self, nombre, tiempo): #Inicializa un proceso con un nombre, tiempo total de ejecución, tiempo restante y estado inicial "Listo".
         self.nombre = nombre
         self.tiempo_total = tiempo
         self.tiempo_restante = tiempo
@@ -34,6 +35,8 @@ class Proceso:
 # ---------------------------------------------------------
 # Clase SistemaOperativo: Gestiona la lógica y planificación [cite: 15]
 # ---------------------------------------------------------
+#crea un proceso solicitando al usuario el nombre y el tiempo de ejecución, luego lo agrega a la lista de procesos del sistema operativo. 
+#Si el usuario ingresa un valor no numérico para el tiempo, se muestra un mensaje de error.
 class SistemaOperativo:
     def __init__(self):
         self.procesos = []
@@ -47,10 +50,9 @@ class SistemaOperativo:
             print(f"{Color.VERDE}✔ Proceso '{nombre}' creado satisfactoriamente.{Color.RESET}\n")
         except ValueError:
             print(f"{Color.ROJO}✘ Error: El tiempo debe ser un valor numérico entero.{Color.RESET}\n")
-#crea un proceso solicitando al usuario el nombre y el tiempo de ejecución, luego lo agrega a la lista de procesos del sistema operativo. 
-#Si el usuario ingresa un valor no numérico para el tiempo, se muestra un mensaje de error.
-# ---------------------------------------------------------
 
+# ---------------------------------------------------------
+# Función para mostrar los procesos registrados en una tabla de control de procesos (PCB) con colores según su estado.
     def mostrar_procesos(self):
         if not self.procesos:
             print(f"\n{Color.AMARILLO}[ No hay procesos registrados ]{Color.RESET}\n")
@@ -95,7 +97,9 @@ class SistemaOperativo:
             print(f"  {Color.VERDE}✔{Color.RESET} Proceso {p.nombre} finalizado.             ")
 
         print(f"{Color.VERDE}Planificación FCFS concluida.{Color.RESET}\n")
-
+#----------------------------------------------
+#importa el algoritmo de planificación FCFS (First-Come, First-Served), donde los procesos se ejecutan en el orden en que fueron creados.
+# Cada proceso se ejecuta completamente antes de pasar al siguiente.
     # Algoritmo Round Robin [cite: 31]
     def ejecutar_rr(self):
         if not [p for p in self.procesos if p.estado != "Terminado"]:
@@ -136,6 +140,8 @@ class SistemaOperativo:
 # Si el proceso no ha terminado, se vuelve a colocar al final de la cola; de lo contrario, se marca como terminado.
     # Interfaz tipo terminal [cite: 32, 37]
 #----------------------------------------------------------
+   # La función menu presenta una interfaz de texto en la terminal con opciones para crear procesos, 
+   # ver la tabla de control de procesos (PCB), eliminar procesos y ejecutar los algoritmos de planificación FCFS y Round Robin.
     def menu(self):
         while True:
             print(f"{Color.CYAN}╔════════════════════════════════════════════╗")
